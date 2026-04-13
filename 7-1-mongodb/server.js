@@ -112,7 +112,7 @@
  *  - Go to cluster click on connect and select MongoDB for VS code
  *  - Copy the connection string.
  *       Example connection string:
- *       -  Correct Format: mongodb+srv://HasanDB:<db_password>@cluster0.rygtjue.mongodb.net/TestDB
+ *       -  Correct Format: mongodb+srv://manaripadd_db_user:<Manar@1234567>@cluster0.rygtjue.mongodb.net/TestDB
  *       -  Incorrect Format: mongodb+srv://HasanDB:<db_password>@cluster0.rygtjue.mongodb.net
  *  - write your database username in place of HasanDB in the connection string.
  *  - write your database password in place of <db_password> in the connection string.
@@ -186,19 +186,46 @@
 
 // import mongoose
 
+import mongoose from "mongoose";
 // establish connection
-
+mongoose.connect("mongodb+srv://manaripadd_db_user:<Manar@1234567>@cluster0.rygtjue.mongodb.net/TestDB");
 
 // define schema
-
+const studentSchema = new mongoose.Schema({
+         name: String,
+         age: Number,
+         major: String
+      });
+      const Student = mongoose.model("Student", studentSchema);
 
 // create document
-
+async function createStudents() {
+      await Student.insertMany([
+         { name: "Ali", age: 21, major: "CS" },
+         { name: "Sara", age: 23, major: "SE" }
+      ]);
+      console.log("✅ Inserted");
+      }
+      createStudents();
 
 // read document
-
+ async function readStudents() {
+         const all = await Student.find();
+         console.log(all);
+      }
+      readStudents();
 
 // update document
+async function updateStudent() {
+         await Student.updateOne({ name: "Ali" }, { age: 22 });
+         console.log("✅ Updated Ali");
+      }
+      updateStudent();
 
 
 // delete document
+async function deleteStudent() {
+         await Student.deleteOne({ name: "Sara" });
+         console.log("✅ Deleted Sara");
+      }
+      deleteStudent();
